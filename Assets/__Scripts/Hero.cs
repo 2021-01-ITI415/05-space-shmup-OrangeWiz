@@ -15,12 +15,17 @@ public class Hero : MonoBehaviour {
     public float projectileSpeed = 40;
     public Weapon[] weapons;
 
+    // Applies the new value directly to the Particle System
+
     [Header("Set Dynamically")]
     [SerializeField]
     public float _shieldLevel = 1;
 
     // This variable holds a reference to the last triggering GameObject
     private GameObject lastTriggerGo = null;
+    private ParticleSystem particle;
+    private int giantcount = 0;
+    
 
     // Declare a new delegate type WeaponFireDelegate
     public delegate void WeaponFireDelegate();
@@ -105,6 +110,24 @@ public class Hero : MonoBehaviour {
         {
             case WeaponType.shield:
                 shieldLevel++;
+                break;                
+                
+            case WeaponType.nitro:
+                if(speed+10 < 60)
+                speed += 10;
+                particle = GetComponent<ParticleSystem>();
+                particle.Play();
+                break;
+
+            case WeaponType.giant:
+                if (giantcount < 3)
+                {
+                    Vector3 sc = new Vector3(.2f, .2f, .2f);
+                    transform.localScale += sc;
+                    shieldLevel += 50;
+                    speed -= 5;
+                    giantcount++;
+                }
                 break;
 
             default:
@@ -143,7 +166,7 @@ public class Hero : MonoBehaviour {
                 Destroy(this.gameObject);
                 // Tell Main.S to restart the game after a delay
                 Main.S.DelayedRestart(gameRestartDelay);
-            }
+            }            
         }
     }
 

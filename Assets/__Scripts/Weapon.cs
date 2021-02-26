@@ -16,7 +16,9 @@ public enum WeaponType
     missile, // [NI] Homing missiles
     laser, // [NI] Damage over time
     shield, // Raise shieldLevel
-    stardust
+    stardust,
+    nitro,
+    giant
 }
 
 /// <summary>
